@@ -1,0 +1,255 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Dashboard - A-Z African & Caribbean Store{% endblock %}
+
+{% block content %}
+<!-- Welcome Banner -->
+<div class="welcome-banner animate-left">
+    <h1>👋 Welcome back, {{ customer.first_name }}!</h1>
+    <p>We're glad to see you again. Here's what's happening with your account.</p>
+</div>
+
+<!-- Statistics Grid -->
+<div class="stats-grid">
+    <!-- Loyalty Points Card -->
+    <div class="stat-card animate-left" style="animation-delay: 0.1s;">
+        <div class="stat-icon">
+            <i class="bi bi-star-fill"></i>
+        </div>
+        <div class="stat-label">Loyalty Points</div>
+        <div class="stat-value">{{ stats.loyalty_points|default:0 }}</div>
+        <p style="color: var(--medium-gray); font-size: 0.9rem; margin-top: 10px;">
+            <i class="bi bi-info-circle"></i> Earn points with every purchase
+        </p>
+    </div>
+    
+    <!-- Total Purchases Card -->
+    <div class="stat-card gold animate-left" style="animation-delay: 0.2s;">
+        <div class="stat-icon">
+            <i class="bi bi-cart-check-fill"></i>
+        </div>
+        <div class="stat-label">Total Purchases</div>
+        <div class="stat-value">${{ stats.total_purchases|default:"0.00" }}</div>
+        <p style="color: var(--medium-gray); font-size: 0.9rem; margin-top: 10px;">
+            <i class="bi bi-graph-up"></i> Keep shopping to earn more rewards
+        </p>
+    </div>
+    
+    <!-- Unread Messages Card -->
+    <div class="stat-card yellow animate-left" style="animation-delay: 0.3s;">
+        <div class="stat-icon">
+            <i class="bi bi-envelope-fill"></i>
+        </div>
+        <div class="stat-label">Unread Messages</div>
+        <div class="stat-value">{{ unread_messages|default:0 }}</div>
+        <p style="color: var(--medium-gray); font-size: 0.9rem; margin-top: 10px;">
+            <i class="bi bi-bell"></i> Check your inbox regularly
+        </p>
+    </div>
+    
+    <!-- Member Since Card -->
+    <div class="stat-card chocolate animate-left" style="animation-delay: 0.4s;">
+        <div class="stat-icon">
+            <i class="bi bi-calendar-check-fill"></i>
+        </div>
+        <div class="stat-label">Member Since</div>
+        <div class="stat-value" style="font-size: 1.5rem;">{{ customer.created_at|date:"M Y" }}</div>
+        <p style="color: var(--medium-gray); font-size: 0.9rem; margin-top: 10px;">
+            <i class="bi bi-heart-fill"></i> Thank you for being with us
+        </p>
+    </div>
+</div>
+
+<!-- Quick Actions Section -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-lightning-charge-fill" style="color: var(--accent-gold);"></i>
+            Quick Actions
+        </h2>
+    </div>
+</div>
+
+<div class="row g-4 mb-5">
+    <!-- Edit Profile Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="action-card animate-left" style="animation-delay: 0.5s;">
+            <div class="stat-icon" style="margin-bottom: 20px;">
+                <i class="bi bi-person-fill"></i>
+            </div>
+            <h3>Edit Profile</h3>
+            <p>Update your personal information and preferences</p>
+            <a href="{% url 'dashboard:profile' %}" class="btn btn-primary-custom w-100">
+                <i class="bi bi-pencil-square"></i> Edit Profile
+            </a>
+        </div>
+    </div>
+    
+    <!-- Send Message Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="action-card animate-left" style="animation-delay: 0.6s;">
+            <div class="stat-icon gold" style="margin-bottom: 20px;">
+                <i class="bi bi-chat-dots-fill"></i>
+            </div>
+            <h3>Send Message</h3>
+            <p>Contact our support team for assistance</p>
+            <a href="#" class="btn btn-gold-custom w-100">
+                <i class="bi bi-send-fill"></i> Send Message
+            </a>
+        </div>
+    </div>
+    
+    <!-- View Messages Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="action-card animate-right" style="animation-delay: 0.7s;">
+            <div class="stat-icon yellow" style="margin-bottom: 20px;">
+                <i class="bi bi-inbox-fill"></i>
+            </div>
+            <h3>View Messages</h3>
+            <p>Check your inbox for important updates</p>
+            <a href="#" class="btn btn-outline-custom w-100">
+                <i class="bi bi-envelope-open"></i> View Messages
+            </a>
+        </div>
+    </div>
+    
+    <!-- All Notifications Card -->
+    <div class="col-md-6 col-lg-3">
+        <div class="action-card animate-right" style="animation-delay: 0.8s;">
+            <div class="stat-icon chocolate" style="margin-bottom: 20px;">
+                <i class="bi bi-bell-fill"></i>
+            </div>
+            <h3>Notifications</h3>
+            <p>View all your notifications and alerts</p>
+            <a href="{% url 'dashboard:notifications' %}" class="btn btn-chocolate-custom w-100">
+                <i class="bi bi-bell"></i> View Notifications
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Notifications Section -->
+<div class="row">
+    <div class="col-12">
+        <h2 style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-bell-fill" style="color: var(--chocolate);"></i>
+            Recent Notifications
+        </h2>
+    </div>
+</div>
+
+<div class="content-wrapper animate-left" style="animation-delay: 0.9s;">
+    {% if recent_notifications %}
+        <div class="list-group list-group-flush">
+            {% for notification in recent_notifications %}
+                <div class="list-group-item border-0 py-3" style="background: transparent;">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="stat-icon" style="width: 50px; height: 50px; font-size: 1.3rem; margin: 0;">
+                            <i class="bi bi-bell-fill"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h5 style="margin-bottom: 5px; color: var(--chocolate-dark);">
+                                {{ notification.title }}
+                            </h5>
+                            <p style="margin-bottom: 5px; color: var(--dark-gray);">
+                                {{ notification.message }}
+                            </p>
+                            <small style="color: var(--medium-gray);">
+                                <i class="bi bi-clock"></i> {{ notification.created_at|timesince }} ago
+                            </small>
+                        </div>
+                        {% if not notification.is_read %}
+                            <span class="badge" style="background: var(--accent-gold); color: var(--white); padding: 5px 12px; border-radius: 50px;">
+                                New
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if not forloop.last %}
+                    <hr style="margin: 0; border-color: #E0E0E0;">
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'dashboard:notifications' %}" class="btn btn-outline-custom">
+                <i class="bi bi-arrow-right-circle"></i> View All Notifications
+            </a>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <div class="stat-icon gold" style="margin: 0 auto 20px; width: 80px; height: 80px; font-size: 2rem;">
+                <i class="bi bi-inbox"></i>
+            </div>
+            <h4 style="color: var(--medium-gray); margin-bottom: 10px;">No Notifications</h4>
+            <p style="color: var(--medium-gray);">You're all caught up! Check back later for updates and promotions.</p>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Account Info Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h2 style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-person-circle" style="color: var(--primary-green);"></i>
+            Account Information
+        </h2>
+    </div>
+</div>
+
+<div class="content-wrapper animate-right" style="animation-delay: 1s;">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div style="padding: 20px; background: var(--light-gray); border-radius: 15px; border-left: 4px solid var(--primary-green);">
+                <h5 style="color: var(--chocolate-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <i class="bi bi-envelope-fill" style="color: var(--primary-green);"></i>
+                    Email
+                </h5>
+                <p style="font-size: 1.1rem; color: var(--dark-gray); margin: 0;">
+                    {{ customer.email }}
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="padding: 20px; background: var(--light-gray); border-radius: 15px; border-left: 4px solid var(--accent-gold);">
+                <h5 style="color: var(--chocolate-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <i class="bi bi-telephone-fill" style="color: var(--accent-gold);"></i>
+                    Phone
+                </h5>
+                <p style="font-size: 1.1rem; color: var(--dark-gray); margin: 0;">
+                    {{ customer.phone|default:"Not provided" }}
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="padding: 20px; background: var(--light-gray); border-radius: 15px; border-left: 4px solid var(--chocolate);">
+                <h5 style="color: var(--chocolate-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <i class="bi bi-calendar-event-fill" style="color: var(--chocolate);"></i>
+                    Last Purchase
+                </h5>
+                <p style="font-size: 1.1rem; color: var(--dark-gray); margin: 0;">
+                    {{ customer.last_purchase_date|default:"No purchases yet" }}
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div style="padding: 20px; background: var(--light-gray); border-radius: 15px; border-left: 4px solid var(--accent-yellow);">
+                <h5 style="color: var(--chocolate-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <i class="bi bi-shield-check-fill" style="color: var(--accent-yellow);"></i>
+                    Account Status
+                </h5>
+                <p style="font-size: 1.1rem; margin: 0;">
+                    <span class="badge" style="background: var(--primary-green); color: var(--white); padding: 8px 20px; border-radius: 50px; font-size: 1rem;">
+                        <i class="bi bi-check-circle-fill"></i> Active
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-4">
+        <a href="{% url 'dashboard:profile' %}" class="btn btn-primary-custom">
+            <i class="bi bi-eye"></i> View Full Profile
+        </a>
+    </div>
+</div>
+{% endblock %}

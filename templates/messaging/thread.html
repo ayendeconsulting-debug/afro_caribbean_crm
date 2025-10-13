@@ -1,0 +1,145 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}{{ thread.subject }} - Messages{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <a href="{% url 'messaging:inbox' %}" class="btn btn-sm btn-outline-secondary mb-2">
+                    <i class="bi bi-arrow-left"></i> Back to Inbox
+                </a>
+                <h2 class="mb-0">{{ thread.subject }}</h2>
+                {% if thread.is_closed %}
+                    <span class="badge bg-secondary">Closed</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Messages -->
+        <div class="card mb-4">
+            <div class="card-body">
+                {% for message in messages_list %}
+                    <div class="mb-4 {% if not forloop.last %}border-bottom pb-4{% endif %}">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                {% if message.is_staff_reply %}
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                                         style="width: 40px; height: 40px;">
+                                        <i class="bi bi-person-badge"></i>
+                                    </div>
+                                {% else %}
+                                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" 
+                                         style="width: 40px; height: 40px;">
+                                        <i class="bi bi-person"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <strong>
+                                        {% if message.is_staff_reply %}
+                                            Support Team
+                                        {% else %}
+                                            You
+                                        {% endif %}
+                                    </strong>
+                                    <small class="text-muted">
+                                        {{ message.created_at|date:"M d, Y - g:i A" }}
+                                    </small>
+                                </div>
+                                <p class="mb-0">{{ message.message|linebreaks }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Reply Form -->
+        {% if not thread.is_closed %}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-reply"></i> Reply to Thread</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                                <div class="text-danger small mt-1">{{ form.message.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-send"></i> Send Reply
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> This thread has been closed. 
+                <a href="{% url 'messaging:compose' %}">Start a new conversation</a> if you need further assistance.
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+        <!-- Thread Info -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Thread Information</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>Subject:</strong><br>
+                    {{ thread.subject }}
+                </p>
+                <p class="mb-2">
+                    <strong>Created:</strong><br>
+                    {{ thread.created_at|date:"M d, Y - g:i A" }}
+                </p>
+                <p class="mb-2">
+                    <strong>Last Updated:</strong><br>
+                    {{ thread.updated_at|date:"M d, Y - g:i A" }}
+                </p>
+                <p class="mb-2">
+                    <strong>Status:</strong><br>
+                    {% if thread.is_closed %}
+                        <span class="badge bg-secondary">Closed</span>
+                    {% else %}
+                        <span class="badge bg-success">Open</span>
+                    {% endif %}
+                </p>
+                <p class="mb-0">
+                    <strong>Total Messages:</strong><br>
+                    {{ messages_list|length }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-lightning-fill"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'messaging:compose' %}" class="btn btn-primary">
+                        <i class="bi bi-envelope-plus"></i> New Message
+                    </a>
+                    <a href="{% url 'messaging:inbox' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-inbox"></i> Back to Inbox
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

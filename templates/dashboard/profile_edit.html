@@ -1,0 +1,181 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Edit Profile - Afro-Caribbean CRM{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4"><i class="bi bi-pencil-square"></i> Edit Profile</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Personal Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-person"></i> Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.first_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="text-danger small mt-1">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.phone.id_for_label }}" class="form-label">Phone</label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <div class="text-danger small mt-1">{{ form.phone.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">Date of Birth</label>
+                            {{ form.date_of_birth }}
+                            {% if form.date_of_birth.errors %}
+                                <div class="text-danger small mt-1">{{ form.date_of_birth.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Address</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="{{ form.street_address.id_for_label }}" class="form-label">Street Address</label>
+                        {{ form.street_address }}
+                        {% if form.street_address.errors %}
+                            <div class="text-danger small mt-1">{{ form.street_address.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.city.id_for_label }}" class="form-label">City</label>
+                            {{ form.city }}
+                            {% if form.city.errors %}
+                                <div class="text-danger small mt-1">{{ form.city.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.province.id_for_label }}" class="form-label">Province</label>
+                            {{ form.province }}
+                            {% if form.province.errors %}
+                                <div class="text-danger small mt-1">{{ form.province.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="{{ form.postal_code.id_for_label }}" class="form-label">Postal Code</label>
+                            {{ form.postal_code }}
+                            {% if form.postal_code.errors %}
+                                <div class="text-danger small mt-1">{{ form.postal_code.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-gear"></i> Preferences</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="{{ form.preferred_language.id_for_label }}" class="form-label">Preferred Language</label>
+                        {{ form.preferred_language }}
+                        {% if form.preferred_language.errors %}
+                            <div class="text-danger small mt-1">{{ form.preferred_language.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.dietary_preferences.id_for_label }}" class="form-label">Dietary Preferences</label>
+                        {{ form.dietary_preferences }}
+                        {% if form.dietary_preferences.errors %}
+                            <div class="text-danger small mt-1">{{ form.dietary_preferences.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.favorite_products.id_for_label }}" class="form-label">Favorite Products</label>
+                        {{ form.favorite_products }}
+                        {% if form.favorite_products.errors %}
+                            <div class="text-danger small mt-1">{{ form.favorite_products.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-bell"></i> Notification Settings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-check mb-3">
+                        {{ form.email_notifications }}
+                        <label class="form-check-label" for="{{ form.email_notifications.id_for_label }}">
+                            Email Notifications
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        {{ form.sms_notifications }}
+                        <label class="form-check-label" for="{{ form.sms_notifications.id_for_label }}">
+                            SMS Notifications
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        {{ form.push_notifications }}
+                        <label class="form-check-label" for="{{ form.push_notifications.id_for_label }}">
+                            Push Notifications
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Save Changes
+                </button>
+                <a href="{% url 'dashboard:profile' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Profile Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li class="mb-2">Keep your contact information up to date to receive important notifications.</li>
+                    <li class="mb-2">Set your dietary preferences to help us recommend suitable products.</li>
+                    <li class="mb-2">Enable notifications to stay informed about special promotions and offers.</li>
+                    <li>Your information is secure and will never be shared with third parties.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

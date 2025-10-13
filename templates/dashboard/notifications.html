@@ -1,0 +1,138 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Notifications - A-Z African & Caribbean Store{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="welcome-banner animate-left" style="background: var(--gradient-chocolate);">
+    <h1><i class="bi bi-bell-fill"></i> Notifications</h1>
+    <p>Stay updated with the latest news, offers, and important updates</p>
+</div>
+
+<!-- Notifications Stats -->
+<div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 40px;">
+    <div class="stat-card animate-left" style="animation-delay: 0.1s;">
+        <div class="stat-icon">
+            <i class="bi bi-bell-fill"></i>
+        </div>
+        <div class="stat-label">Total Notifications</div>
+        <div class="stat-value">{{ notifications|length }}</div>
+    </div>
+    
+    <div class="stat-card gold animate-left" style="animation-delay: 0.2s;">
+        <div class="stat-icon">
+            <i class="bi bi-envelope-exclamation-fill"></i>
+        </div>
+        <div class="stat-label">Unread</div>
+        <div class="stat-value">{{ unread_count|default:0 }}</div>
+    </div>
+</div>
+
+<!-- Notifications List -->
+<div class="content-wrapper animate-left" style="animation-delay: 0.3s;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 style="margin: 0; display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-list-ul" style="color: var(--primary-green);"></i>
+            All Notifications
+        </h2>
+        {% if notifications %}
+            <button class="btn btn-outline-custom" onclick="markAllAsRead()">
+                <i class="bi bi-check-all"></i> Mark All as Read
+            </button>
+        {% endif %}
+    </div>
+    
+    {% if notifications %}
+        <div class="list-group list-group-flush">
+            {% for notification in notifications %}
+                <div class="list-group-item border-0 py-4 {% if not notification.is_read %}bg-light{% endif %}" 
+                     style="border-radius: 15px; margin-bottom: 15px; transition: all 0.3s ease; cursor: pointer;"
+                     onmouseover="this.style.transform='translateX(10px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.1)';"
+                     onmouseout="this.style.transform='translateX(0)'; this.style.boxShadow='none';">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="stat-icon {% if notification.notification_type == 'promotion' %}gold{% elif notification.notification_type == 'order' %}chocolate{% else %}{% endif %}" 
+                             style="width: 55px; height: 55px; font-size: 1.4rem; margin: 0; flex-shrink: 0;">
+                            {% if notification.notification_type == 'promotion' %}
+                                <i class="bi bi-megaphone-fill"></i>
+                            {% elif notification.notification_type == 'order' %}
+                                <i class="bi bi-bag-check-fill"></i>
+                            {% elif notification.notification_type == 'account' %}
+                                <i class="bi bi-person-fill-check"></i>
+                            {% else %}
+                                <i class="bi bi-bell-fill"></i>
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 style="margin: 0; color: var(--chocolate-dark); font-size: 1.2rem;">
+                                    {{ notification.title }}
+                                    {% if not notification.is_read %}
+                                        <span class="badge" style="background: var(--accent-gold); color: var(--white); font-size: 0.75rem; padding: 3px 10px; border-radius: 50px; margin-left: 10px;">
+                                            New
+                                        </span>
+                                    {% endif %}
+                                </h5>
+                                <small style="color: var(--medium-gray); white-space: nowrap; margin-left: 15px;">
+                                    <i class="bi bi-clock"></i> {{ notification.created_at|timesince }} ago
+                                </small>
+                            </div>
+                            <p style="margin-bottom: 10px; color: var(--dark-gray); line-height: 1.6;">
+                                {{ notification.message }}
+                            </p>
+                            <div class="d-flex gap-2 align-items-center">
+                                <span class="badge" style="background: linear-gradient(135deg, var(--light-gray) 0%, #E0E0E0 100%); color: var(--dark-gray); padding: 5px 12px; border-radius: 50px; font-size: 0.8rem;">
+                                    <i class="bi bi-tag-fill"></i> {{ notification.notification_type|title }}
+                                </span>
+                                {% if notification.expires_at %}
+                                    <span class="badge" style="background: linear-gradient(135deg, #FFF8E1 0%, #FFE082 100%); color: #F57F17; padding: 5px 12px; border-radius: 50px; font-size: 0.8rem;">
+                                        <i class="bi bi-hourglass-split"></i> Expires {{ notification.expires_at|date:"M d, Y" }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <div class="stat-icon gold" style="margin: 0 auto 30px; width: 100px; height: 100px; font-size: 3rem;">
+                <i class="bi bi-inbox"></i>
+            </div>
+            <h3 style="color: var(--chocolate-dark); margin-bottom: 15px;">No Notifications</h3>
+            <p style="color: var(--medium-gray); font-size: 1.1rem; max-width: 500px; margin: 0 auto 30px;">
+                You're all caught up! Check back later for updates and promotions from A-Z African & Caribbean Store.
+            </p>
+            <a href="{% url 'dashboard:home' %}" class="btn btn-gold-custom">
+                <i class="bi bi-house-door"></i> Back to Dashboard
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Quick Actions -->
+{% if notifications %}
+    <div class="text-center mt-4 mb-5">
+        <a href="{% url 'dashboard:home' %}" class="btn btn-outline-custom me-2">
+            <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
+        </a>
+        <button class="btn btn-chocolate-custom" onclick="clearAllNotifications()">
+            <i class="bi bi-trash3"></i> Clear All Notifications
+        </button>
+    </div>
+{% endif %}
+
+<script>
+function markAllAsRead() {
+    // This would typically make an AJAX call to mark all notifications as read
+    alert('Feature coming soon: Mark all notifications as read');
+}
+
+function clearAllNotifications() {
+    if (confirm('Are you sure you want to clear all notifications? This action cannot be undone.')) {
+        // This would typically make an AJAX call to clear all notifications
+        alert('Feature coming soon: Clear all notifications');
+    }
+}
+</script>
+{% endblock %}
