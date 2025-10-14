@@ -87,9 +87,9 @@ class CustomerAdmin(UserAdmin):
         
         self.message_user(
             request,
-            f'✅ Promotion sent to {count} customer(s) successfully!'
+            f' Promotion sent to {count} customer(s) successfully!'
         )
-    send_promotion_notification.short_description = "📢 Send promotion to selected customers"
+    send_promotion_notification.short_description = " Send promotion to selected customers"
     
     def send_announcement_notification(self, request, queryset):
         """Send announcement to selected customers"""
@@ -97,7 +97,7 @@ class CustomerAdmin(UserAdmin):
         for customer in queryset:
             Notification.objects.create(
                 customer=customer,
-                title="📣 Important Announcement",
+                title=" Important Announcement",
                 message="We have exciting news to share with you! Visit our store for more details.",
                 notification_type='announcement',
                 is_active=True
@@ -106,9 +106,9 @@ class CustomerAdmin(UserAdmin):
         
         self.message_user(
             request,
-            f'✅ Announcement sent to {count} customer(s) successfully!'
+            f' Announcement sent to {count} customer(s) successfully!'
         )
-    send_announcement_notification.short_description = "📣 Send announcement to selected customers"
+    send_announcement_notification.short_description = " Send announcement to selected customers"
     
     def add_to_vip_group(self, request, queryset):
         """Add selected customers to VIP group"""
@@ -124,9 +124,9 @@ class CustomerAdmin(UserAdmin):
         
         self.message_user(
             request,
-            f'✅ Added {count} customer(s) to VIP group!'
+            f' Added {count} customer(s) to VIP group!'
         )
-    add_to_vip_group.short_description = "⭐ Add to VIP group"
+    add_to_vip_group.short_description = " Add to VIP group"
     
     def export_customer_emails(self, request, queryset):
         """Export selected customer emails"""
@@ -192,9 +192,9 @@ class CustomerGroupAdmin(admin.ModelAdmin):
         
         self.message_user(
             request,
-            f'✅ Promotion sent to {total_count} customer(s) across {queryset.count()} group(s)!'
+            f' Promotion sent to {total_count} customer(s) across {queryset.count()} group(s)!'
         )
-    send_group_promotion.short_description = "📢 Send promotion to group members"
+    send_group_promotion.short_description = " Send promotion to group members"
     
     def send_group_announcement(self, request, queryset):
         """Send announcement to all members of selected groups"""
@@ -204,7 +204,7 @@ class CustomerGroupAdmin(admin.ModelAdmin):
             for customer in group.customers.all():
                 Notification.objects.create(
                     customer=customer,
-                    title=f"📣 Important Update for {group.name}",
+                    title=f" Important Update for {group.name}",
                     message=f"We have an important announcement for {group.name} members. Check your dashboard for details.",
                     notification_type='announcement',
                     is_active=True
@@ -213,9 +213,9 @@ class CustomerGroupAdmin(admin.ModelAdmin):
         
         self.message_user(
             request,
-            f'✅ Announcement sent to {total_count} customer(s) across {queryset.count()} group(s)!'
+            f' Announcement sent to {total_count} customer(s) across {queryset.count()} group(s)!'
         )
-    send_group_announcement.short_description = "📣 Send announcement to group members"
+    send_group_announcement.short_description = " Send announcement to group members"
 
 
 @admin.register(CustomerNote)
@@ -268,7 +268,7 @@ class NotificationAdmin(admin.ModelAdmin):
         elif obj.group:
             return format_html('<span style="color: #1e5128;">👥 {} ({} members)</span>', 
                              obj.group.name, obj.group.customers.count())
-        return '🌐 Broadcast'
+        return ' Broadcast'
     recipient_display.short_description = 'Recipient'
     
     def mark_read(self, request, queryset):
@@ -291,9 +291,9 @@ class NotificationAdmin(admin.ModelAdmin):
         
         self.message_user(
             request,
-            f'✅ Created {total_count} individual notification(s) from group notifications!'
+            f' Created {total_count} individual notification(s) from group notifications!'
         )
-    expand_group_notifications.short_description = "📤 Send group notifications to members"
+    expand_group_notifications.short_description = " Send group notifications to members"
 
 
 # Admin site customization

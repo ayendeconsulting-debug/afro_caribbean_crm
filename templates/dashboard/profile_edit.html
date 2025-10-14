@@ -315,21 +315,21 @@
     <div class="header">
         <div class="header-content">
             <div class="logo">
-                🏪 A-Z African & Caribbean Store
+                 A-Z African & Caribbean Store
             </div>
             <div class="nav-links">
-                <a href="{% url 'dashboard:home' %}">🏠 Dashboard</a>
+                <a href="{% url 'dashboard:home' %}"> Dashboard</a>
                 <a href="#">✉️ Messages</a>
-                <a href="#">🔔 Notifications</a>
+                <a href="#"> Notifications</a>
                 <a href="{% url 'dashboard:profile' %}">👤 Profile</a>
-                <a href="{% url 'dashboard:logout' %}">🚪 Logout</a>
+                <a href="{% url 'dashboard:logout' %}"> Logout</a>
             </div>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="container">
-        <h1 class="page-title">✏️ Edit Profile</h1>
+        <h1 class="page-title"> Edit Profile</h1>
 
         <!-- Messages -->
         {% if messages %}
@@ -388,7 +388,7 @@
                 <!-- Address -->
                 <div class="form-section">
                     <h3 class="section-title">
-                        <span>📍</span>
+                        <span></span>
                         <span>Address</span>
                     </h3>
                     <div class="form-grid">
@@ -466,7 +466,7 @@
                 <!-- Notification Preferences -->
                 <div class="form-section">
                     <h3 class="section-title">
-                        <span>🔔</span>
+                        <span></span>
                         <span>Notification Preferences</span>
                     </h3>
                     <div class="form-grid">
@@ -500,10 +500,10 @@
                 <!-- Buttons -->
                 <div class="button-group">
                     <button type="submit" class="btn btn-primary">
-                        💾 Save Changes
+                         Save Changes
                     </button>
                     <a href="{% url 'dashboard:profile' %}" class="btn btn-secondary">
-                        ❌ Cancel
+                         Cancel
                     </a>
                 </div>
             </form>

@@ -256,12 +256,12 @@
     
     <div class="stats-mini-grid">
         <div class="mini-stat">
-            <div class="mini-stat-icon">⭐</div>
+            <div class="mini-stat-icon"></div>
             <div class="mini-stat-value">{{ customer.loyalty_points|default:0 }}</div>
             <div class="mini-stat-label">Loyalty Points</div>
         </div>
         <div class="mini-stat">
-            <div class="mini-stat-icon">💰</div>
+            <div class="mini-stat-icon"></div>
             <div class="mini-stat-value">${{ customer.total_purchases|default:"0.00" }}</div>
             <div class="mini-stat-label">Total Purchases</div>
         </div>
@@ -447,13 +447,13 @@
     </div>
     <div class="preferences-list">
         <span class="preference-badge">
-            Email: {% if customer.email_notifications %}✅ Enabled{% else %}❌ Disabled{% endif %}
+            Email: {% if customer.email_notifications %} Enabled{% else %} Disabled{% endif %}
         </span>
         <span class="preference-badge">
-            SMS: {% if customer.sms_notifications %}✅ Enabled{% else %}❌ Disabled{% endif %}
+            SMS: {% if customer.sms_notifications %} Enabled{% else %} Disabled{% endif %}
         </span>
         <span class="preference-badge">
-            Push: {% if customer.push_notifications %}✅ Enabled{% else %}❌ Disabled{% endif %}
+            Push: {% if customer.push_notifications %} Enabled{% else %} Disabled{% endif %}
         </span>
     </div>
 </div>
