@@ -136,21 +136,16 @@ def profile_edit(request):
     customer = request.user
     
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, instance=customer)
+        form = CustomerProfileForm(request.POST, instance=customer)  # CHANGE THIS LINE
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your profile has been updated successfully.')
+            messages.success(request, 'Profile updated successfully!')
             return redirect('dashboard:profile')
     else:
-        form = ProfileUpdateForm(instance=customer)
+        form = CustomerProfileForm(instance=customer)  # AND THIS LINE
     
-    context = {
-        'form': form,
-        'customer': customer,
-    }
+    return render(request, 'dashboard/profile_edit.html', {'form': form})
     
-    return render(request, 'dashboard/profile_edit.html', context)
-
 
 @customer_only
 def password_change(request):
