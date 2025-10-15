@@ -5,8 +5,7 @@ Minimal configuration for Phase 1 - removes problematic imports.
 
 import os
 from pathlib import Path
-from datetime import timedelta
-from decouple import config
+
 
 
 # Build paths inside the project
@@ -18,12 +17,19 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 
 # CRITICAL FIX: Trust Railway domain for CSRF
+# CSRF Configuration for Railway
 CSRF_TRUSTED_ORIGINS = [
     'https://web-production-da16.up.railway.app',
-    'https://*.railway.app',
+]
+
+# Also ensure domain is in ALLOWED_HOSTS
+ALLOWED_HOSTS = [
+    'web-production-da16.up.railway.app',
+    'localhost',
+    '127.0.0.1',
+]
 ]
 # Application definition
 INSTALLED_APPS = [
