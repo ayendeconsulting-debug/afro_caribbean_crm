@@ -6,20 +6,16 @@ Minimal configuration for Phase 1 - removes problematic imports.
 import os
 from pathlib import Path
 
-
-
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-
 # CRITICAL FIX: Trust Railway domain for CSRF
-# CSRF Configuration for Railway
 CSRF_TRUSTED_ORIGINS = [
     'https://web-production-da16.up.railway.app',
 ]
@@ -30,10 +26,10 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
 ]
-]
+
 # Application definition
 INSTALLED_APPS = [
-   # 'jazzmin',  # Must be before django.contrib.admin
+    # 'jazzmin',  # Must be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
